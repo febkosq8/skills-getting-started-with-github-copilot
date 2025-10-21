@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-	console.log("app.js loaded"); // debug: confirm script ran
 
 	const activitiesList = document.getElementById("activities-list");
 	const activitySelect = document.getElementById("activity");
