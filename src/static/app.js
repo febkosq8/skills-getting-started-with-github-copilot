@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	const messageEl = document.getElementById("message");
 
 	function initialsFromEmail(email) {
+		// Basic email format validation: must contain one '@' and non-empty local/host parts
+		if (!/^[^@]+@[^@]+$/.test(email)) {
+			return email.slice(0, 1).toUpperCase();
+		}
 		const local = email.split("@")[0] || "";
 		const parts = local.split(/[\.\-_]/).filter(Boolean);
 		if (parts.length === 0) return email.slice(0, 1).toUpperCase();
