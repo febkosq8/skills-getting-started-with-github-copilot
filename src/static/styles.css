@@ -201,3 +201,32 @@ footer {
 	color: #083e8a;
 	text-decoration: underline;
 }
+
+/* Delete button next to each participant */
+.participant-actions {
+	margin-left: auto;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.btn-icon {
+	background: transparent;
+	border: none;
+	padding: 6px;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #c62828;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-icon:hover {
+	background: rgba(198, 40, 40, 0.06);
+}
+
+.btn-icon svg {
+	width: 16px;
+	height: 16px;
+}

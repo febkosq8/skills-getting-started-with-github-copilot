@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	async function loadActivities() {
 		activitiesList.innerHTML = "<p>Loading activities...</p>";
 		try {
-			const res = await fetch("/activities");
+			const res = await fetch("/activities", { cache: "no-store" });
 			if (!res.ok) throw new Error("Failed to fetch activities");
 			const data = await res.json();
 
@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			activitiesList.innerHTML = "";
 			for (const [name, info] of Object.entries(data)) {
+				// add option to select so users can choose an activity without page refresh
+				const opt = document.createElement("option");
+				opt.value = name;
+				opt.textContent = name;
+				activitySelect.appendChild(opt);
 				console.debug("Rendering activity:", name, "participants:", (info.participants || []).length); // debug
 
 				// card
@@ -85,8 +90,41 @@ document.addEventListener("DOMContentLoaded", () => {
 						mail.href = `mailto:${p}`;
 						mail.textContent = p;
 
+						// Actions container (for delete button)
+						const actions = document.createElement("div");
+						actions.className = "participant-actions";
+
+						// Delete button
+						const delBtn = document.createElement("button");
+						delBtn.type = "button";
+						delBtn.className = "btn-icon";
+						delBtn.title = `Unregister ${p}`;
+						delBtn.innerHTML = `\n\t<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t  <path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M10 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M14 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M9 6V4h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t</svg>\n\t`;
+
+						// Attach click handler to unregister
+						delBtn.addEventListener("click", async () => {
+							if (!confirm(`Unregister ${p} from ${name}?`)) return;
+							try {
+								const url = `/activities/${encodeURIComponent(name)}/unregister?email=${encodeURIComponent(p)}`;
+								const res = await fetch(url, { method: "DELETE" });
+								const body = await res.json();
+								if (!res.ok) {
+									showMessage(body.detail || "Failed to unregister.", "error");
+								} else {
+									showMessage(body.message || "Participant unregistered", "success");
+									// refresh participants list for the activity (simple approach: reload all)
+									await loadActivities();
+								}
+							} catch (err) {
+								console.error(err);
+								showMessage("Network error while unregistering.", "error");
+							}
+						});
+
 						li.appendChild(avatar);
 						li.appendChild(mail);
+						actions.appendChild(delBtn);
+						li.appendChild(actions);
 						ul.appendChild(li);
 					}
 				}
