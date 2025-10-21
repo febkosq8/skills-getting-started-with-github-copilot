@@ -99,7 +99,53 @@ document.addEventListener("DOMContentLoaded", () => {
 						delBtn.type = "button";
 						delBtn.className = "btn-icon";
 						delBtn.title = `Unregister ${p}`;
-						delBtn.innerHTML = `\n\t<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\n\t  <path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M10 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M14 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t  <path d="M9 6V4h6v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n\t</svg>\n\t`;
+						// Create SVG icon safely using DOM methods
+						const svgNS = "http://www.w3.org/2000/svg";
+						const svg = document.createElementNS(svgNS, "svg");
+						svg.setAttribute("viewBox", "0 0 24 24");
+						svg.setAttribute("fill", "none");
+						svg.setAttribute("xmlns", svgNS);
+						// Path 1
+						const path1 = document.createElementNS(svgNS, "path");
+						path1.setAttribute("d", "M3 6h18");
+						path1.setAttribute("stroke", "currentColor");
+						path1.setAttribute("stroke-width", "2");
+						path1.setAttribute("stroke-linecap", "round");
+						path1.setAttribute("stroke-linejoin", "round");
+						svg.appendChild(path1);
+						// Path 2
+						const path2 = document.createElementNS(svgNS, "path");
+						path2.setAttribute("d", "M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6");
+						path2.setAttribute("stroke", "currentColor");
+						path2.setAttribute("stroke-width", "2");
+						path2.setAttribute("stroke-linecap", "round");
+						path2.setAttribute("stroke-linejoin", "round");
+						svg.appendChild(path2);
+						// Path 3
+						const path3 = document.createElementNS(svgNS, "path");
+						path3.setAttribute("d", "M10 11v6");
+						path3.setAttribute("stroke", "currentColor");
+						path3.setAttribute("stroke-width", "2");
+						path3.setAttribute("stroke-linecap", "round");
+						path3.setAttribute("stroke-linejoin", "round");
+						svg.appendChild(path3);
+						// Path 4
+						const path4 = document.createElementNS(svgNS, "path");
+						path4.setAttribute("d", "M14 11v6");
+						path4.setAttribute("stroke", "currentColor");
+						path4.setAttribute("stroke-width", "2");
+						path4.setAttribute("stroke-linecap", "round");
+						path4.setAttribute("stroke-linejoin", "round");
+						svg.appendChild(path4);
+						// Path 5
+						const path5 = document.createElementNS(svgNS, "path");
+						path5.setAttribute("d", "M9 6V4h6v2");
+						path5.setAttribute("stroke", "currentColor");
+						path5.setAttribute("stroke-width", "2");
+						path5.setAttribute("stroke-linecap", "round");
+						path5.setAttribute("stroke-linejoin", "round");
+						svg.appendChild(path5);
+						delBtn.appendChild(svg);
 
 						// Attach click handler to unregister
 						delBtn.addEventListener("click", async () => {
