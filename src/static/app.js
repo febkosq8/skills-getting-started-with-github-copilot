@@ -44,7 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				opt.value = name;
 				opt.textContent = name;
 				activitySelect.appendChild(opt);
-				console.debug("Rendering activity:", name, "participants:", (info.participants || []).length); // debug
+				if (window.DEBUG) {
+					console.debug("Rendering activity:", name, "participants:", (info.participants || []).length); // debug
+				}
 
 				// card
 				const card = document.createElement("div");
